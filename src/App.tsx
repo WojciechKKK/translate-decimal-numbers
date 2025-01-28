@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import './App.css'
 import React from 'react';
-import { exportStageSVG } from 'react-konva-to-svg';
 import SearchComponent from './components/SearchComponent/SearchComponent';
 import { Button, Drawer, Stack, Tooltip } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -11,6 +10,7 @@ import codeLegend from './assets/code-legend.png';
 import CloseIcon from '@mui/icons-material/Close';
 import { NUM_COORDINATES } from './config/generatorConfig';
 import LineComponent from './components/LineComponent/LineComponent';
+import {exportStageSVG} from "react-konva-to-svg"
 
 function App() {
   const [coordinates, setCoordinates] = useState<number[][]>([]);
@@ -26,14 +26,6 @@ function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
-
-  function exportToPng(): void {
-    if (!stageRef.current) {
-      throw new Error('Invalid stage')
-    };
-
-    downloadURI(stageRef.current.toDataURL(), 'image.png');
   }
 
   const exportToSvg = useCallback(async () => {
@@ -70,26 +62,21 @@ function App() {
       />
       { generated && (
         <>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{m: 3, justifyContent: "center", alignItems: "center"}}
-          >
-            <Tooltip title="Export to .png">
-              <Button variant="contained" startIcon={<DownloadIcon />} onClick={exportToPng}>PNG</Button>
-            </Tooltip>
-            <Tooltip title="Export to .svg">
-              <Button variant="contained"  startIcon={<DownloadIcon />} onClick={exportToSvg}>SVG</Button>
-            </Tooltip>
-          </Stack>
           <LineComponent stageRef={stageRef} coordinates={coordinates} />
           <Stack
             direction="row"
             spacing={2}
-            sx={{m: 3, justifyContent: "center", alignItems: "center"}}
+            sx={{mt: 4, justifyContent: "center", alignItems: "center"}}
           >
-            <Button variant="outlined" startIcon={<RefreshIcon />} onClick={() => setGenerated(false)}>Clear</Button>
-            <Button variant="outlined" startIcon={<LegendToggleIcon />} onClick={() => setVisibleLegend(true)}>Legend</Button>
+            <Tooltip title="Export to .svg">
+              <Button variant="contained"  startIcon={<DownloadIcon />} onClick={exportToSvg}>SVG</Button>
+            </Tooltip>
+            <Tooltip title="Type new code">
+              <Button variant="outlined" startIcon={<RefreshIcon />} onClick={() => setGenerated(false)}>Clear</Button>
+            </Tooltip>
+            <Tooltip title="Show documentation">
+              <Button variant="outlined" startIcon={<LegendToggleIcon />} onClick={() => setVisibleLegend(true)}>Legend</Button>
+            </Tooltip>
           </Stack>
           <Drawer anchor="right" open={visibileLegend} onClose={() => setVisibleLegend(false)}>
             <img width="auto" height="400" src={codeLegend} alt="Code Legend" />

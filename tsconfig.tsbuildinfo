@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/@types/react-konva-to-svg.d.ts","./src/components/linecomponent/linecomponent.tsx","./src/components/searchcomponent/searchcomponent.tsx","./src/config/generatorconfig.ts"],"errors":true,"version":"5.6.3"}
